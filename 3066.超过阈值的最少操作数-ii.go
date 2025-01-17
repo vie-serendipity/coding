@@ -6,29 +6,42 @@
 
 // @lc code=start
 func minOperations(nums []int, k int) int {
-	sort.Slice(nums, func(i, j int) bool {
-		return nums[i] < nums[j]
-	})
-	ans := 0
-	for {
-		if len(nums) < 2 {
-			return ans
-		}
-		newNum := min(nums[0], nums[1])*2 + max(nums[0], nums[1])
-		nums = append([]int{}, nums[2:]...)
-		for i, num := range nums {
-			if newNum < num {
-				nums = append(nums[:i], append([]int{newNum}, nums[i:]...)...)
-				break
-			}
-		}
-		ans++
-		if nums[0] >= k {
-			break
-		}
+	res := 0
+	pq := &MinHeap{}
+	heap.Init(pq)
+	for _, num := range nums {
+		heap.Push(pq, num)
 	}
-	return ans
+
+	for (*pq)[0] < k {
+		x := heap.Pop(pq).(int)
+		y := heap.Pop(pq).(int)
+		heap.Push(pq, x+x+y)
+		res++
+	}
+
+	return res
 }
+
+// MinHeap
+type MinHeap []int
+
+func (h MinHeap) Len() int           { return len(h) }
+func (h MinHeap) Less(i, j int) bool { return h[i] < h[j] }
+func (h MinHeap) Swap(i, j int)      { h[i], h[j] = h[j], h[i] }
+
+func (h *MinHeap) Push(x interface{}) {
+	*h = append(*h, x.(int))
+}
+
+func (h *MinHeap) Pop() interface{} {
+	old := *h
+	n := len(old)
+	x := old[n-1]
+	*h = old[0 : n-1]
+	return x
+}
+
 
 // @lc code=end
 
