@@ -13,9 +13,8 @@ func mostPoints(questions [][]int) int64 {
 		if i+1 < n {
 			dp[i][0] = max(dp[i+1][0], dp[i+1][1])
 		}
-
 		if i+questions[i][1]+1 < n && i+1 < n {
-			dp[i][1] = max(questions[i][0]+dp[i+questions[i][1]+1][1], questions[i][0]+dp[i+1][0])
+			dp[i][1] = questions[i][0] + max(dp[i+questions[i][1]+1][1], dp[i+questions[i][1]+1][0])
 		} else {
 			dp[i][1] = questions[i][0]
 		}
