@@ -13,7 +13,7 @@ func numberOfArrays(differences []int, lower int, upper int) int {
 		right = min(differences[i]+right, upper)
 		ans = min(ans, right-left+1)
 	}
-	if ans<0{
+	if ans < 0 {
 		return 0
 	}
 	return ans
